@@ -1,7 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
+
+import "./styles.css";
 
 let email = "";
 let password = "";

@@ -8,6 +8,7 @@ import { Private } from "./pages/private";
 import injectContext from "./store/appContext";
 
 import { Footer } from "./component/footer";
+import { Navbar } from "./component/navbar";
 
 //create your first component
 const Layout = () => {
@@ -19,6 +20,7 @@ const Layout = () => {
     <div>
       <BrowserRouter basename={basename}>
         <ScrollToTop>
+          <Navbar />
           <Switch>
             <Route exact path="/">
               <Register />

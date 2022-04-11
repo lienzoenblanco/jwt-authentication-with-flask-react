@@ -1,6 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { Redirect } from "react-router-dom";
+
+import "./styles.css";
 
 let email = "";
 let password = "";
@@ -15,7 +17,7 @@ export const Register = () => {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          await actions.signup(email, password);
+          await actions.register(email, password);
           setRedirect(true);
         }}
       >

@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 
+import "./styles.css";
+
 export const Private = () => {
   const { store, actions } = useContext(Context);
   useEffect(() => {
