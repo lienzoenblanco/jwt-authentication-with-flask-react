@@ -1,49 +1,59 @@
-const getState = ({ getStore, getActions, setStore }) => {
-	return {
-		store: {
-			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
-		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+import { BaseUrl } from "./base.js";
 
-			getMessage: () => {
-				// fetching data from the backend
-				fetch(process.env.BACKEND_URL + "/api/hello")
-					.then(resp => resp.json())
-					.then(data => setStore({ message: data.message }))
-					.catch(error => console.log("Error loading message from backend", error));
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+const getState = ({ getStore, setStore }) => {
+  return {
+    store: {
+      token: "",
+    },
+    actions: {
+      register: (email, password) => {
+        fetch(BaseUrl + "/user/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email, password: password }),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data))
+          .catch((err) => console.log(err));
+      },
+      login: (email, password) => {
+        const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+        fetch(BaseUrl + "/user/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email, password: password }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setStore({ token: data });
+            sessionStorage.setItem("token", JSON.stringify(data));
+          })
+          .catch((err) => console.log(err));
+      },
+      validate: () => {
+        const store = getStore();
+        fetch(BaseUrl + "user/private", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${store.token}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(store.token))
+          .catch((err) => console.log(err));
+      },
 
-				//reset the global store
-				setStore({ demo: demo });
-			}
-		}
-	};
+      logout: () => {
+        setStore({ token: "" });
+        console.log("Logout completed");
+      },
+    },
+  };
 };
 
 export default getState;
