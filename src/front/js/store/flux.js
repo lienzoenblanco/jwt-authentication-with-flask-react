@@ -3,7 +3,7 @@ import { BaseUrl } from "./base.js";
 const getState = ({ getStore, setStore }) => {
   return {
     store: {
-      token: "",
+      token: localStorage.getItem("token"),
     },
     actions: {
       register: (email, password) => {
@@ -30,14 +30,14 @@ const getState = ({ getStore, setStore }) => {
         })
           .then((res) => res.json())
           .then((data) => {
-            setStore({ token: data });
-            sessionStorage.setItem("token", JSON.stringify(data));
+            setStore({ token: data.token });
+            localStorage.setItem("token", JSON.stringify(data.token));
           })
           .catch((err) => console.log(err));
       },
       validate: () => {
         const store = getStore();
-        fetch(BaseUrl + "user/private", {
+        fetch(BaseUrl + "/user/private", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${store.token}`,
@@ -49,7 +49,8 @@ const getState = ({ getStore, setStore }) => {
       },
 
       logout: () => {
-        setStore({ token: "" });
+        setStore({ token: null });
+        localStorage.clear();
         console.log("Logout completed");
       },
     },

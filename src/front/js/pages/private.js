@@ -12,12 +12,12 @@ export const Private = () => {
 
   return (
     <div className="text-center mt-5">
-      <h1>Acceso privado</h1>
-      {store.token == "error user not exist" || store.token == "" ? (
-        <Link to="/login">No tienes acceso. Volver al login</Link>
+      <h1>Private access</h1>
+      {store.token == "error user not exist" || store.token == null ? (
+        <Link to="/login">You do not have access. Back to login</Link>
       ) : (
         <div className="alert alert-info">
-          Tu usuario sí tiene acceso a esta página
+          Your user does have access to this page
         </div>
       )}
     </div>

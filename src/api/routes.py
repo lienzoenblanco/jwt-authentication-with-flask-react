@@ -12,7 +12,7 @@ from flask_jwt_extended import get_jwt_identity
 
 api = Blueprint('api', __name__)
 
-@api.route('/register',methods=['POST'])
+@api.route('user/register',methods=['POST'])
 def signup():
         body=request.get_json()
         new_user=User(email=body['email'],password=body['password'],is_active=True)
@@ -25,7 +25,6 @@ def signup():
 def login():
     body=request.get_json()
     user=db.session.query(User).filter(User.email==body['email']).first()
-    token = user(body)
     if user.password == body['password']:
         access_token=create_access_token(identity={'id':user.id})
         return jsonify({'token':access_token}),200
@@ -34,10 +33,9 @@ def login():
 
  
 
-@api.route('/private',methods=["GET"])
+@api.route('user/private',methods=["GET"])
 @jwt_required()
 def private():
     user_token=get_jwt_identity()
-    print(user_token)
     user=User.query.get(user_token)
     return jsonify(user.serialize()),200

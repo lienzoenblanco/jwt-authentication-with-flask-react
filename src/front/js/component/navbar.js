@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
-  const logout = () => {
-    localStorage.clear();
-  };
+  const { actions } = useContext(Context);
 
   return (
     <nav className="navbar navbar-light bg-light">
@@ -16,7 +15,7 @@ export const Navbar = () => {
         </Link>
         <div className="ml-auto">
           <Link to="/">
-            <button className="btn btn-primary" onClick={logout}>
+            <button className="btn btn-primary" onClick={actions.logout}>
               Logout
             </button>
           </Link>
